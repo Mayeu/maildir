@@ -2,6 +2,10 @@
 
 A maildir manipulation library for Elixir
 
+## Warning
+
+It is very much a work in progress. Things may breaks without any warning!
+
 ## Steps
 
 1. Implementing the original Maildir specification

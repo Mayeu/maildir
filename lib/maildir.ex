@@ -1,0 +1,2 @@
+defmodule Maildir do
+end
