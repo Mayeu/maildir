@@ -36,7 +36,7 @@ defmodule Maildir.Filename do
   end
 
   @doc """
-  Add a flag to the info part.
+  Update the flags from the info part.
 
   The only valid flags are:
     * P: `:passed`
@@ -46,13 +46,35 @@ defmodule Maildir.Filename do
     * D: `:draft`
     * F: `:flagged`
   """
-  def add_flag(f, :passed),  do: :not_implemented
-  def add_flag(f, :replied), do: :not_implemented
-  def add_flag(f, :seen),    do: :not_implemented
-  def add_flag(f, :trashed), do: :not_implemented
-  def add_flag(f, :draft),   do: :not_implemented
-  def add_flag(f, :flagged), do: :not_implemented
-  def add_flag(_, _),        do: :error
+  def update_flags(info, flag, action)
+
+  def update_flags(info, flag, :add) do
+    case flag do
+      :passed  -> add_flag(info, "P")
+      :replied -> add_flag(info, "R")
+      :seen    -> add_flag(info, "S")
+      :trashed -> add_flag(info, "T")
+      :draft   -> add_flag(info, "D")
+      :flagged -> add_flag(info, "F")
+      _        -> :error
+    end
+  end
+
+  def update_flags(info, flag, :remove) do
+    case flag do
+      :passed  -> remove_flag(info, "P")
+      :replied -> remove_flag(info, "R")
+      :seen    -> remove_flag(info, "S")
+      :trashed -> remove_flag(info, "T")
+      :draft   -> remove_flag(info, "D")
+      :flagged -> remove_flag(info, "F")
+      _        -> :error
+    end
+  end
+
+  def update_flags(_, _, _) do
+    :error
+  end
 
   # Private API
 
@@ -108,4 +130,25 @@ defmodule Maildir.Filename do
     |> Hexa.encode
   end
 
+  # Add a flag in the info part
+  defp add_flag(info, flag) do
+    # Separate the flag part
+    [version, flags] = String.split(info, ",")
+    # Add and reorder the flag
+    version <> "," <> order_flags(flags <> flag)
+  end
+
+  # Remove a flag from the info part
+  defp remove_flag(info, flag) do
+    String.split(info, ~r{})
+    |> List.delete(flag)
+    |> Enum.join
+  end
+
+  # Order flags of the info part
+  defp order_flags(flags) do
+    String.split(flags, ~r{})
+    |> Enum.sort
+    |> Enum.join
+  end
 end
