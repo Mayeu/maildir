@@ -31,8 +31,8 @@ defmodule Maildir.Filename do
       {"1204680122.27c448351529ae6fd8673e346ba5979a5b10a0f2427ff89716782219552.azathoth", "2,"}
   """
   def parse(name) when is_binary(name) do
-    [uniq, info] = String.split(name, ":")
-    {uniq, info}
+    String.split(name, ":")
+    |> List.to_tuple
   end
 
   @doc """
