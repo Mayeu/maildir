@@ -12,7 +12,7 @@ defmodule Maildir.Message do
   Return the full path of a message
   """
   def path(message) when is_map(message) do
-    :not_implemented
+    Path.join([message.maildir, Atom.to_string(message.folder), Maildir.Filename.join(message.uniq, message.info)])
   end
 
   # In case you give the path of the message
