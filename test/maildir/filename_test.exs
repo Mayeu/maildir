@@ -16,30 +16,6 @@ defmodule Maildir.FilenameTest do
     assert info == "2,"
   end
 
-  test "adding a flags should only change the info part" do
-  #    filename = "1204640692.77732e38c8d0e510cbaa8692d56729032c44fb3c785f18fa81750320955.azathoth:2,"
-  #    {orig_uniq, orig_info} = Maildir.Filename.parse(filename)
-  #
-  #    # P, R, S, T, D, F
-  #    filename = Maildir.Filename.add_flag(filename, :replied)
-  #    {uniq, info} = Maildir.Filename.parse(filename)
-  #    assert info != orig_info
-  #    assert info == "2,R"
-  #    assert uniq == orig_uniq
-  #
-  #    filename = Maildir.Filename.add_flag(filename, :passed)
-  #    {uniq, info} = Maildir.Filename.parse(filename)
-  #    assert info != orig_info
-  #    assert info == "2,PR"
-  #    assert uniq == orig_uniq
-  #
-  #    filename = Maildir.Filename.add_flag(filename, :draft)
-  #    {uniq, info} = Maildir.Filename.parse(filename)
-  #    assert info != orig_info
-  #    assert info == "2,DPR"
-  #    assert uniq == orig_uniq
-  end
-
   test "update the flags" do
     info = "2,"
 
