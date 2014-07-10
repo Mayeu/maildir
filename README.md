@@ -27,10 +27,10 @@ iex> my_maildir = Maildir.open("/home/doctor/not_a_maildir")
 :error
 ```
 
-A `Message` is defined as follow:
+A message (`Maildir.Message`) is defined as follow:
 
 ```elixir
-iex> defmodule Message do
+iex> defmodule Maildir.Message do
 ...>   defstruct maildir: nil, folder: :tmp, uniq: nil, info: "2,"
 ...> end
 ```
@@ -40,11 +40,11 @@ the `:cur`, `:new` or `:tmp` folder, `uniq` is the uniq part of the message,
 and `info` its info part.
 
 The content of a message is not kept in memory, it is written to disk as soon
-at its creation.
+as it is created.
 
 ```elixir
 iex> Maildir.add("/home/doctor/Maildir", "Doctor! We need you!")
-{:ok, %Message{maildir: "/home/doctor/Maildir", folder: :new, uniq: "so_uniq_string", info: "2,"}}
+{:ok, %Maildir.Message{maildir: "/home/doctor/Maildir", folder: :new, uniq: "so_uniq_string", info: "2,"}}
 ```
 
 The library does not assume anything about the content of the file, nor try to
@@ -57,9 +57,9 @@ You can list all the new message in the Maildir:
 
 ```elixir
 iex> Maildir.list(my_maildir, :new)
-[%Message{...}, %Message{...},...]
+[%Maildir.Message{...}, %Maildir.Message{...},...]
 iex> Maildir.list(my_maildir, :cur)
-[%Message{...}, %Message{...},...]
+[%Maildir.Message{...}, %Maildir.Message{...},...]
 ```
 
 Processing a message move it from `new` to `cur`:
@@ -69,8 +69,8 @@ iex> Maildir.Message.process(my_message)
 :ok
 ```
 
-And everywhere a function take a message struct as argument, can pass a string
-of the message fullpath instead:
+And everywhere a function take a message struct as argument, you can pass a
+string representing the message fullpath instead:
 
 ```elixir
 iex> Maildir.Message.process("/home/doctor/Maildir/new/1111.2ec459f.tardis:2,")
