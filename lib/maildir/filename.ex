@@ -36,6 +36,13 @@ defmodule Maildir.Filename do
   end
 
   @doc """
+  Given a uniq part and a info part, return the filename
+  """
+  def join(uniq, info) do
+    uniq <> ":" <> info
+  end
+
+  @doc """
   Update the flags from the info part.
 
   The only valid flags are:
@@ -87,7 +94,7 @@ defmodule Maildir.Filename do
 
   # Concat the basic empty "info" part to a "uniq" part
   defp add_info_part(uniq_part) do
-    uniq_part <> ":2,"
+    join(uniq_part, "2,")
   end
 
   # Get the time since epoch
