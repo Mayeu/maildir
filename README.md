@@ -31,7 +31,7 @@ A message (`Maildir.Message`) is defined as follow:
 
 ```elixir
 iex> defmodule Maildir.Message do
-...>   defstruct maildir: nil, folder: :tmp, uniq: nil, info: "2,"
+...>   defstruct maildir: nil, folder: :tmp, uniq: nil, info: nil
 ...> end
 ```
 
@@ -44,7 +44,7 @@ as it is created.
 
 ```elixir
 iex> Maildir.add("/home/doctor/Maildir", "Doctor! We need you!")
-{:ok, %Maildir.Message{maildir: "/home/doctor/Maildir", folder: :new, uniq: "so_uniq_string", info: "2,"}}
+{:ok, %Maildir.Message{maildir: "/home/doctor/Maildir", folder: :new, uniq: "so_uniq_string", info: nil}}
 ```
 
 The library does not assume anything about the content of the file, nor try to
@@ -73,7 +73,7 @@ And everywhere a function take a message struct as argument, you can pass a
 string representing the message fullpath instead:
 
 ```elixir
-iex> Maildir.Message.process("/home/doctor/Maildir/new/1111.2ec459f.tardis:2,")
+iex> Maildir.Message.process("/home/doctor/Maildir/new/1111.2ec459f.tardis")
 :ok
 ```
 
