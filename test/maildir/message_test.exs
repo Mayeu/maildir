@@ -38,4 +38,42 @@ defmodule Maildir.MessageTest do
 
     assert Maildir.Message.path(message) == message_path
   end
+
+  test "update the flags" do
+    info = "2,"
+
+    assert Maildir.Message.update_flags(info, :passed, :add) == "2,P"
+    assert Maildir.Message.update_flags(info, :replied, :add) == "2,R"
+    assert Maildir.Message.update_flags(info, :seen, :add) == "2,S"
+    assert Maildir.Message.update_flags(info, :trashed, :add) == "2,T"
+    assert Maildir.Message.update_flags(info, :draft, :add) == "2,D"
+    assert Maildir.Message.update_flags(info, :flagged, :add) == "2,F"
+
+    info = Maildir.Message.update_flags(info, :passed, :add)
+    assert info == "2,P"
+
+    info = Maildir.Message.update_flags(info, :passed, :remove)
+    assert info == "2,"
+
+    info = Maildir.Message.update_flags(info, :replied, :add)
+    assert info == "2,R"
+
+    info = Maildir.Message.update_flags(info, :draft, :add)
+    assert info == "2,DR"
+
+    info = Maildir.Message.update_flags(info, :trashed, :add)
+    assert info == "2,DRT"
+
+    info = Maildir.Message.update_flags(info, :passed, :add)
+    assert info == "2,DPRT"
+
+    info = Maildir.Message.update_flags(info, :replied, :remove)
+    assert info == "2,DPT"
+
+    info = Maildir.Message.update_flags(info, :draft, :remove)
+    assert info == "2,PT"
+
+    info = Maildir.Message.update_flags(info, :trashed, :remove)
+    assert info == "2,P"
+  end
 end
