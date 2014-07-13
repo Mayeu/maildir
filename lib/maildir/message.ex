@@ -11,7 +11,9 @@ defmodule Maildir.Message do
   Given a maildir path, return a message struct
   """
   def create(maildir) when is_binary(maildir) do
-    :not_implemented
+    %Maildir.Message{
+      maildir: maildir,
+      uniq: Maildir.Filename.gen()}
   end
 
   @doc """

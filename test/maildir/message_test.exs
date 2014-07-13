@@ -2,6 +2,24 @@ defmodule Maildir.MessageTest do
   use ExUnit.Case
   doctest Maildir.Message
 
+  test "creating a message should work with the default value" do
+    maildir = "/tmp/maildir"
+    message = Maildir.Message.create(maildir)
+
+    assert message.maildir == maildir
+    assert message.folder == :tmp
+    assert String.match?(message.uniq, ~r/\A[0-9]+\.[0-9a-f]+\.\w+\z/)
+    assert message.info == :nil
+
+    # Given something else than a String should not work
+    assert_raise FunctionClauseError, fn ->
+      Maildir.Message.create([])
+    end
+    assert_raise FunctionClauseError, fn ->
+      Maildir.Message.create(%{})
+    end
+  end
+
   test "returning the filename should works" do
     message_path = "/path/cur/1204680122.27c448163e3a5979a5b18219552.azathoth:2,"
     filename = "1204680122.27c448163e3a5979a5b18219552.azathoth:2,"
