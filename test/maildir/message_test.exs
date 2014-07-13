@@ -14,7 +14,7 @@ defmodule Maildir.MessageTest do
       uniq: "1204680122.27c448163e3a5979a5b18219552.azathoth",
       info: "2,"}
 
-    assert Maildir.Message.filename(message_path) == filename
+    assert Maildir.Message.filename(message) == filename
   end
 
   test "returning full path to a message should works" do
