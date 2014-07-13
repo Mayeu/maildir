@@ -60,6 +60,28 @@ defmodule Maildir.Message do
   end
 
   @doc """
+  Rename a message in the filesystem.
+
+  Return the new path
+  """
+  def rename(src=%Maildir.Message{}, dest=%Maildir.Message{}) do
+    rename(path(src), path(dest))
+  end
+
+  def rename(src=%Maildir.Message{}, dest) when is_binary(dest) do
+    rename(path(src), dest)
+  end
+
+  def rename(src, dest=%Maildir.Message{}) when is_binary(src) do
+    rename(src, path(dest))
+  end
+
+  def rename(src, dest) when is_binary(src) and is_binary(dest) do
+    :not_implemented
+  end
+
+
+  @doc """
   Mark an e-mail identified by its path, as replied and return its new path.
 
       iex> Maildir.Message.reply("/path/1204680122.27c448351529ae6fd8673e346ba5979a5b10a0f2427ff89716782219552.azathoth:2,")
