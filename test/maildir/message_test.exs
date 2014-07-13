@@ -76,4 +76,22 @@ defmodule Maildir.MessageTest do
     info = Maildir.Message.update_flags(info, :trashed, :remove)
     assert info == "2,P"
   end
+
+  test "joining filename should work with or without info" do
+    m = %Maildir.Message{
+      maildir: "/tmp/maildir",
+      folder: :tmp,
+      uniq: "1204680122.27c448163e3a5979a5b18219552.azathoth",
+      info: "2,"}
+
+    assert Maildir.Message.join(m.uniq, m.info) == "1204680122.27c448163e3a5979a5b18219552.azathoth:2,"
+
+    m = %Maildir.Message{
+      maildir: "/tmp/maildir",
+      folder: :tmp,
+      uniq: "1204680122.27c448163e3a5979a5b18219552.azathoth",
+      info: nil}
+
+    assert Maildir.Message.join(m.uniq, m.info) == "1204680122.27c448163e3a5979a5b18219552.azathoth"
+  end
 end

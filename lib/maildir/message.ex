@@ -48,8 +48,13 @@ defmodule Maildir.Message do
   end
 
   @doc """
-  Given a uniq part and a info part, return the filename
+  Given a uniq part and a info part, return the filename. An info part can be
+  empty, so in this case it only returns the uniq part.
   """
+  def join(uniq, nil) do
+    uniq
+  end
+
   def join(uniq, info) do
     uniq <> ":" <> info
   end
