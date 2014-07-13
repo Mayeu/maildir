@@ -25,17 +25,12 @@ defmodule Maildir.Message do
   end
 
   def process(m=%Maildir.Message{}), do: :not_implemented
-  def process(_), do: :error
 
   @doc """
   Return the full path of a message
   """
   def path(m=%Maildir.Message{}) do
     Path.join([m.maildir, Atom.to_string(m.folder), join(m.uniq, m.info)])
-  end
-
-  def path(_) do
-    :error
   end
 
   @doc """
@@ -81,7 +76,6 @@ defmodule Maildir.Message do
   def rename(src, dest) when is_binary(src) and is_binary(dest) do
     :not_implemented
   end
-
 
   @doc """
   Mark an e-mail identified by its path, as replied and return its new path.
