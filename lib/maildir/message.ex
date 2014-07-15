@@ -1,8 +1,12 @@
 defmodule Maildir.Message do
   defstruct maildir: nil, folder: :tmp, uniq: nil, info: nil
 
-  # The default empty info
-  @info "2,"
+  # Some default value
+  @part_separator ":"          # part separator
+  @info_separator ","          # info separator
+  @info "2" <> @info_separator # the default info
+
+  #
 
   ##
   ## Public API
@@ -53,7 +57,7 @@ defmodule Maildir.Message do
   end
 
   def join(uniq, info) do
-    uniq <> ":" <> info
+    uniq <> @part_separator <> info
   end
 
   @doc """
@@ -165,9 +169,9 @@ defmodule Maildir.Message do
   # Add a flag in the info part
   defp add_flag(info, flag) do
     # Separate the flag part
-    [version, flags] = String.split(info, ",")
+    [version, flags] = String.split(info, @info_separator)
     # Add and reorder the flag
-    version <> "," <> order_flags(flags <> flag)
+    version <> @info_separator <> order_flags(flags <> flag)
   end
 
   # Remove a flag from the info part
