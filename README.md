@@ -82,6 +82,7 @@ iex> Maildir.Message.process("/home/doctor/Maildir/new/1111.2ec459f.tardis")
 1. Implementing the original Maildir specification
 1. Implementing the Maildir++ extension
 1. Implementing the Dovecot Maildir extension
+1. Profit
 
 ## Resources
 
