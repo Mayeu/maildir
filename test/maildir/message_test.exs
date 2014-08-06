@@ -112,4 +112,47 @@ defmodule Maildir.MessageTest do
 
     assert Maildir.Message.join(m.uniq, m.info) == "1204680122.27c448163e3a5979a5b18219552.azathoth"
   end
+
+  test "rename should actually moved file around" do
+    # Get a tmp file
+    {tmp, _} = System.cmd("mktemp", [])
+    tmp = String.rstrip(tmp)
+
+    new = tmp <> "-renamed"
+
+    # Rename it
+    assert new == Maildir.Message.rename(tmp, new)
+    # Assert it exist
+    assert File.exists?(new)
+  end
+
+  test "a message in new should be processed to cur" do
+    # Get a fake maildir
+    maildir = :os.cmd('mktemp -d')
+    |> :erlang.iolist_to_binary
+    |> String.rstrip
+
+    # Create folders in it
+    File.mkdir!(maildir <> "/tmp")
+    File.mkdir!(maildir <> "/new")
+    File.mkdir!(maildir <> "/cur")
+
+    # Create a message
+    m = Maildir.Message.create(maildir)
+
+    # Artificialy move it to new, and touch it to existance
+    m = %{m | folder: :new}
+    File.touch!(Maildir.Message.path(m))
+
+    # The processed message should look like this
+    processed = %{m | folder: :cur, info: "2,"}
+
+    # Now process it
+    assert Maildir.Message.path(processed) == Maildir.Message.process(m)
+
+    # Assert it exist
+    assert File.exists?(Maildir.Message.path(processed))
+
+  end
+
 end

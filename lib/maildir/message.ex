@@ -6,8 +6,6 @@ defmodule Maildir.Message do
   @info_separator ","          # info separator
   @info "2" <> @info_separator # the default info
 
-  #
-
   ##
   ## Public API
 
@@ -28,7 +26,13 @@ defmodule Maildir.Message do
     process(to_message(path))
   end
 
-  def process(m=%Maildir.Message{}), do: :not_implemented
+  def process(m=%Maildir.Message{}) do
+    # Change the folder to cur, and add the basic info part
+    processed = %{m | folder: :cur, info: @info}
+
+    # Rename it
+    rename(m, processed)
+  end
 
   @doc """
   Return the full path of a message
@@ -78,7 +82,10 @@ defmodule Maildir.Message do
   end
 
   def rename(src, dest) when is_binary(src) and is_binary(dest) do
-    :not_implemented
+    case :file.rename(src, dest) do
+      :ok -> dest
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   @doc """
