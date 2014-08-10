@@ -115,8 +115,7 @@ defmodule Maildir.MessageTest do
 
   test "rename should actually moved file around" do
     # Get a tmp file
-    {tmp, _} = System.cmd("mktemp", [])
-    tmp = String.rstrip(tmp)
+    tmp = HelperTest.mktemp()
 
     new = tmp <> "-renamed"
 
@@ -128,14 +127,7 @@ defmodule Maildir.MessageTest do
 
   test "a message in new should be processed to cur" do
     # Get a fake maildir
-    maildir = :os.cmd('mktemp -d')
-    |> :erlang.iolist_to_binary
-    |> String.rstrip
-
-    # Create folders in it
-    File.mkdir!(maildir <> "/tmp")
-    File.mkdir!(maildir <> "/new")
-    File.mkdir!(maildir <> "/cur")
+    maildir = Maildir.create(HelperTest.mktemp_d())
 
     # Create a message
     m = Maildir.Message.create(maildir)
@@ -152,7 +144,5 @@ defmodule Maildir.MessageTest do
 
     # Assert it exist
     assert File.exists?(Maildir.Message.path(processed))
-
   end
-
 end
