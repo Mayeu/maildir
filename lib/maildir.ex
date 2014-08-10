@@ -18,7 +18,15 @@ defmodule Maildir do
   argument.
   """
   def create(path) do
-    :not_implemented
+    # Create the path if not existing
+    File.mkdir_p! path
+
+    # Create all the subfolders
+    File.mkdir_p! path <> "/new"
+    File.mkdir_p! path <> "/cur"
+    File.mkdir_p! path <> "/tmp"
+
+    path
   end
 
   @doc """
